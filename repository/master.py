@@ -1,5 +1,3 @@
-import psycopg2
-
 from dotenv import load_dotenv
 from alpaca_trade_api.rest import REST, TimeFrame
 from sqlalchemy import create_engine
@@ -8,15 +6,17 @@ from time import time
 load_dotenv()
 api = REST()
 
-connection_config = {
-    'user': 'postgres',
-    'password': 'password',
-    'host': 'localhost',
-    'port': 5432,
-    'database': 'sage_owl'
-}
-connection = psycopg2.connect(**connection_config)
-engine = create_engine('postgresql://{user}:{password}@{host}:{port}/{database}'.format(**connection_config))
+def get_engine():
+    connection_config = {
+        'user': 'postgres',
+        'password': 'password',
+        'host': 'localhost',
+        'port': 5432,
+        'database': 'sage_owl'
+    }
+    return create_engine('postgresql://{user}:{password}@{host}:{port}/{database}'.format(**connection_config))
+
+engine = get_engine()
 
 
 with open('./tickers/dow30.txt', 'r') as f:
