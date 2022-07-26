@@ -2,9 +2,13 @@ from dotenv import load_dotenv
 from alpaca_trade_api.rest import REST, TimeFrame
 from sqlalchemy import create_engine
 from time import time
+from glob import glob
+from pathlib import Path
+
 
 load_dotenv()
 api = REST()
+
 
 def get_engine():
     connection_config = {
@@ -16,11 +20,18 @@ def get_engine():
     }
     return create_engine('postgresql://{user}:{password}@{host}:{port}/{database}'.format(**connection_config))
 
+def load_tickers():
+    tickers = []
+    f_cd = Path(__file__).resolve().parent
+    paths = glob(f'{f_cd}/tickers/*.txt')
+    for path in paths:
+        with open(path, 'r') as f:
+            tickers.extend([t.rstrip('\n') for t in f.readlines()])
+    return tickers
+
+
 engine = get_engine()
-
-
-with open('./tickers/dow30.txt', 'r') as f:
-    tickers = [t.rstrip('\n') for t in f.readlines()]
+tickers = load_tickers()
 
 
 print('idx | ticker | time_dl | time_store')
