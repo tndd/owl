@@ -19,7 +19,7 @@ connection = psycopg2.connect(**connection_config)
 engine = create_engine('postgresql://{user}:{password}@{host}:{port}/{database}'.format(**connection_config))
 
 
-with open('tickers/dow30.txt', 'r') as f:
+with open('./tickers/dow30.txt', 'r') as f:
     tickers = [t.rstrip('\n') for t in f.readlines()]
 
 
