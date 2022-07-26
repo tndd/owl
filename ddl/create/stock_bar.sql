@@ -11,3 +11,4 @@ CREATE TABLE public.stock_bar (
 	vwap numeric NOT NULL,
 	CONSTRAINT stock_bar_pk PRIMARY KEY ("timestamp", symbol, time_scale)
 );
+CREATE INDEX stock_bar_symbol_idx ON public.stock_bar USING btree (symbol, time_scale);
