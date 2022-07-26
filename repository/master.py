@@ -7,7 +7,6 @@ from pathlib import Path
 
 
 load_dotenv()
-api = REST()
 
 
 def get_engine():
@@ -30,6 +29,7 @@ def load_tickers():
     return tickers
 
 
+api = REST()
 engine = get_engine()
 tickers = load_tickers()
 
