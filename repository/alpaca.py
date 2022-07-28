@@ -36,7 +36,7 @@ def download_df_ticker(ticker: str, time_frame: TimeFrame):
         time_frame,
         default_time_start,
         default_time_end,
-        adjustment='raw'
+        adjustment='all'
     ).df.reset_index()
     df.insert(0, 'symbol', ticker)
     df.insert(1, 'time_scale', time_frame.value)
@@ -53,7 +53,7 @@ for i, ticker in enumerate(tickers):
     t_start = time()
     df = download_df_ticker(ticker, TimeFrame.Day)
     t_end_get_df = time()
-    df.to_sql('stock_bar', con=engine, if_exists='append', index=False)
+    df.to_sql('alpaca_hist_bar', con=engine, if_exists='append', index=False)
     t_end_store_db = time()
     print(f'{i}\t{ticker}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
