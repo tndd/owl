@@ -49,10 +49,40 @@ class RepositoryAlpaca:
         return df
 
 
+@dataclass
+class ProcessorAlpaca:
+    df: DataFrame
+
+    def price_fluctuation(
+        self,
+        span_short: int = 5,
+        span_mid: int = 25,
+        span_long: int = 125,
+        size: int = 10
+    ) -> DataFrame:
+        df_0 = self.df[['open', 'high', 'low', 'close', 'volume']][:10].reset_index(drop=True)
+        df_1 = self.df[['open', 'high', 'low', 'close', 'volume']][1:11].reset_index(drop=True)
+        print(df_0.head(3))
+        print('---------------')
+        print(df_1.head(3))
+        print('---------------')
+        df_prd = (df_1 - df_0) / df_0
+        df_prd[['open', 'high', 'low', 'close']] = df_prd[['open', 'high', 'low', 'close']] * 10000
+        df_prd['volume'] = df_prd['volume'] * 100
+        print(df_prd)
+        return
+        # for index, row in self.df[span_long:].iterrows():
+        #     avg_short = self.df[index-span_short:index]['close'].mean()
+        #     avg_mid = self.df[index-span_mid:index]['close'].mean()
+        #     avg_long_cv = self.df[index-span_long:index][['close', 'volume']].mean()
+        #     return
+
+
 def main() -> None:
     rp_alpaca = RepositoryAlpaca()
-    df = rp_alpaca.load_df('AAPL', TimeFrame.Hour)
-    print(df)
+    df = rp_alpaca.load_df('AAPL', TimeFrame.Day)
+    pr_alpaca = ProcessorAlpaca(df)
+    print(pr_alpaca.price_fluctuation())
 
 
 if __name__ == '__main__':
