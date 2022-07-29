@@ -1,6 +1,7 @@
 from time import time
 from typing import List
 
+import pandas as pd
 from alpaca_trade_api.rest import REST, TimeFrame
 from dotenv import load_dotenv
 from pandas import DataFrame
@@ -38,6 +39,12 @@ def store_tickers_to_db(api: REST, engine: Engine, tickers: List[str], time_fram
         print(f'{i}\t{ticker}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
 
+def load_df(ticker: str, time_frame: TimeFrame) -> DataFrame:
+    bkr = Broker()
+    query = bkr.load_query('alpaca', 'select', 'symbol')
+    print(query)
+
+
 def main() -> None:
     api = REST()
     bkr = Broker()
@@ -47,5 +54,5 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main()
+    load_df('AAPL', TimeFrame.Day)
 
