@@ -27,5 +27,5 @@ class Broker:
 
     def get_engine(self) -> Engine:
         return create_engine(
-            f'mysql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database})'
+            f'mysql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}'
         )
