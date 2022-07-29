@@ -40,9 +40,9 @@ def store_tickers_to_db(api: REST, engine: Engine, tickers: List[str], time_fram
 
 def main() -> None:
     api = REST()
-    broker = Broker()
-    engine = broker.get_engine()
-    tickers = broker.load_tickers_from_file()
+    bkr = Broker()
+    engine = bkr.get_engine()
+    tickers = bkr.load_tickers_from_file()
     store_tickers_to_db(api, engine, tickers, TimeFrame.Day)
 
 
