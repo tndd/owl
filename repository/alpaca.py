@@ -43,16 +43,16 @@ class RepositoryAlpaca:
             t_end_store_db = time()
             print(f'{i}\t{ticker}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
-
-def load_df(ticker: str, time_frame: TimeFrame) -> DataFrame:
-    query = load_query('alpaca', 'select', 'symbol')
-    print(query)
+    def load_df(self, ticker: str, time_frame: TimeFrame) -> DataFrame:
+        query = load_query('alpaca', 'select', 'symbol')
+        df = pd.read_sql(query, con=self.engine, params=(ticker, time_frame.value))
+        return df
 
 
 def main() -> None:
     rp_alpaca = RepositoryAlpaca()
-    tickers = load_tickers()
-    rp_alpaca.download_tickers_to_db(tickers, TimeFrame.Day)
+    df = rp_alpaca.load_df('AAPL', TimeFrame.Hour)
+    print(df)
 
 
 if __name__ == '__main__':
