@@ -55,9 +55,9 @@ class ProcessorAlpaca:
 
     def price_fluctuation(
         self,
-        span_short: int = 5,
-        span_mid: int = 25,
-        span_long: int = 125,
+        span_short: int = 6,
+        span_mid: int = 36,
+        span_long: int = 216,
         size: int = 10
     ) -> DataFrame:
         df_0 = self.df[['open', 'high', 'low', 'close', 'volume']][:10].reset_index(drop=True)
