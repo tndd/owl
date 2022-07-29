@@ -28,7 +28,7 @@ def load_tickers():
             tickers.extend([t.rstrip('\n') for t in f.readlines()])
     return tickers
 
-def download_df_ticker(ticker: str, time_frame: TimeFrame):
+def download_df_ticker(api: REST, ticker: str, time_frame: TimeFrame):
     default_time_start = "2012-07-24"
     default_time_end = "2022-07-24"
     df = api.get_bars(
@@ -51,7 +51,7 @@ tickers = load_tickers()
 print('idx | ticker | time_dl | time_store')
 for i, ticker in enumerate(tickers):
     t_start = time()
-    df = download_df_ticker(ticker, TimeFrame.Day)
+    df = download_df_ticker(api, ticker, TimeFrame.Day)
     t_end_get_df = time()
     df.to_sql('alpaca_hist_bar', con=engine, if_exists='append', index=False)
     t_end_store_db = time()
