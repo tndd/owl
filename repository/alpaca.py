@@ -1,36 +1,14 @@
-from glob import glob
-from pathlib import Path
 from time import time
 from typing import List
 
 from alpaca_trade_api.rest import REST, TimeFrame
 from dotenv import load_dotenv
 from pandas import DataFrame
-from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 
+from repository.broker import Broker
+
 load_dotenv()
-
-
-def get_engine() -> Engine:
-    connection_config = {
-        'user': 'root',
-        'password': 'password',
-        'host': 'localhost',
-        'port': 3306,
-        'database': 'sage_owl'
-    }
-    return create_engine('mysql://{user}:{password}@{host}:{port}/{database}'.format(**connection_config))
-
-
-def load_tickers() -> List[str]:
-    tickers = []
-    f_cd = Path(__file__).resolve().parent
-    paths = glob(f'{f_cd}/tickers/*.txt')
-    for path in paths:
-        with open(path, 'r') as f:
-            tickers.extend([t.rstrip('\n') for t in f.readlines()])
-    return tickers
 
 
 def download_df_ticker(api: REST, ticker: str, time_frame: TimeFrame) -> DataFrame:
@@ -62,8 +40,9 @@ def store_tickers_to_db(api: REST, engine: Engine, tickers: List[str], time_fram
 
 def main() -> None:
     api = REST()
-    engine = get_engine()
-    tickers = load_tickers()
+    broker = Broker()
+    engine = broker.get_engine()
+    tickers = broker.load_tickers_from_file()
     store_tickers_to_db(api, engine, tickers, TimeFrame.Day)
 
 
