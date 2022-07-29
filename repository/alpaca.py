@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from pandas import DataFrame
 from sqlalchemy.engine import Engine
 
-from repository.broker import Broker
+from repository.broker import get_engine, load_query, load_tickers
 
 load_dotenv()
 
@@ -40,16 +40,14 @@ def store_tickers_to_db(api: REST, engine: Engine, tickers: List[str], time_fram
 
 
 def load_df(ticker: str, time_frame: TimeFrame) -> DataFrame:
-    bkr = Broker()
-    query = bkr.load_query('alpaca', 'select', 'symbol')
+    query = load_query('alpaca', 'select', 'symbol')
     print(query)
 
 
 def main() -> None:
     api = REST()
-    bkr = Broker()
-    engine = bkr.get_engine()
-    tickers = bkr.load_tickers_from_file()
+    engine = get_engine()
+    tickers = load_tickers()
     store_tickers_to_db(api, engine, tickers, TimeFrame.Day)
 
 
