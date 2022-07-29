@@ -1,11 +1,12 @@
-from typing import List
-from dotenv import load_dotenv
-from alpaca_trade_api.rest import REST, TimeFrame
-from pandas import DataFrame
-from sqlalchemy import create_engine
-from time import time
 from glob import glob
 from pathlib import Path
+from time import time
+from typing import List
+
+from alpaca_trade_api.rest import REST, TimeFrame
+from dotenv import load_dotenv
+from pandas import DataFrame
+from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 
 load_dotenv()
