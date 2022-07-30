@@ -61,6 +61,14 @@ class ProcessorAlpaca:
         back_size: int = 10
     ) -> DataFrame:
         back_size += 1
+        # make index
+        index = []
+        for col in ['o', 'h', 'l', 'c', 'v']:
+            for n in range(back_size):
+                index.append(f'{col}{n}')
+        index.insert(0, 'ts')
+        index.extend(['avg_s', 'avg_m', 'avg_l', 'avg_v'])
+        # process df
         for i, r in self.df[span_long:].iterrows():
             # calc average volatility
             avg_short = self.df[i-span_short:i]['close'].mean()
