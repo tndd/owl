@@ -66,14 +66,10 @@ class ProcessorAlpaca:
         for col in ['o', 'h', 'l', 'c', 'v']:
             for n in range(back_size)[::-1]:
                 index.append(f'{col}{n}')
-        index.insert(0, 'ts')
-        index.extend(['avg_s', 'avg_m', 'avg_l', 'avg_v'])
+        # index.insert(0, 'ts')
+        # index.extend(['avg_s', 'avg_m', 'avg_l', 'avg_v'])
         # process df
         for i, r in self.df[span_long:].iterrows():
-            # calc average volatility
-            avg_short = self.df[i-span_short:i]['close'].mean()
-            avg_mid = self.df[i-span_mid:i]['close'].mean()
-            avg_long_cv = self.df[i-span_long:i][['close', 'volume']].mean()
             # calc volatilities
             df_prev = self.df[['open', 'high', 'low', 'close', 'volume']][i-back_size:i].reset_index(drop=True)
             df_now = self.df[['open', 'high', 'low', 'close', 'volume']][i-back_size+1:i+1].reset_index(drop=True)
@@ -82,7 +78,16 @@ class ProcessorAlpaca:
             df_vlt[['open', 'high', 'low', 'close']] = df_vlt[['open', 'high', 'low', 'close']] * 10000
             # percent
             df_vlt['volume'] = df_vlt['volume'] * 100
-            print(df_vlt)
+            # make one line
+            df_vlt_mlt = df_vlt.melt()
+            df_vlt_mlt['col'] = index
+            df_vlt_mlt = df_vlt_mlt.set_index('col')['value']
+            df_vlt_mlt['ts'] = r['timestamp']
+            df_vlt_mlt['avg_s'] = self.df[i-span_short:i]['close'].mean()
+            df_vlt_mlt['avg_m'] = self.df[i-span_mid:i]['close'].mean()
+            df_vlt_mlt['avg_l'] = self.df[i-span_long:i]['close'].mean()
+            df_vlt_mlt['avg_v'] = self.df[i-span_long:i]['volume'].mean()
+            print(df_vlt_mlt)
             return
 
 
