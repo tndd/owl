@@ -49,64 +49,59 @@ class RepositoryAlpaca:
         return df
 
 
-@dataclass
-class ProcessorAlpaca:
-    df: DataFrame
-
-    def price_fluctuation(
-        self,
-        span_short: int = 6,
-        span_mid: int = 36,
-        span_long: int = 216,
-        back_size: int = 10
-    ) -> DataFrame:
-        # preparation
-        back_size += 1
-        # make index
-        index = []
-        for col in ['o', 'h', 'l', 'c', 'v']:
-            for n in range(back_size)[::-1]:
-                index.append(f'{col}{n}')
-        sr_vlts = []
-        # process df
-        for i, r in self.df[span_long:].iterrows():
-            # calc volatilities
-            df_prev = self.df[['open', 'high', 'low', 'close', 'volume']][i-back_size:i].reset_index(drop=True)
-            df_now = self.df[['open', 'high', 'low', 'close', 'volume']][i-back_size+1:i+1].reset_index(drop=True)
-            df_vlt = (df_now - df_prev) / df_prev
-            # basis point
-            df_vlt[['open', 'high', 'low', 'close']] = df_vlt[['open', 'high', 'low', 'close']] * 10000
-            # percent
-            df_vlt['volume'] = df_vlt['volume'] * 100
-            # make one line
-            sr_vlt = df_vlt.melt()
-            sr_vlt['col'] = index
-            sr_vlt = sr_vlt.set_index('col')['value']
-            sr_vlt['ts'] = r['timestamp']
-            # calc average
-            avg_short = self.df[i-span_short:i]['close'].mean()
-            avg_mid = self.df[i-span_mid:i]['close'].mean()
-            avg_long = self.df[i-span_long:i]['close'].mean()
-            avg_volume = self.df[i-span_long:i]['volume'].mean()
-            sr_vlt['avg_s'] = ((self.df['close'][i-1] - avg_short) / avg_short) * 10000
-            sr_vlt['avg_m'] = ((self.df['close'][i-1] - avg_mid) / avg_mid) * 10000
-            sr_vlt['avg_l'] = ((self.df['close'][i-1] - avg_long) / avg_long) * 10000
-            sr_vlt['avg_v'] = ((self.df['volume'][i-1] - avg_volume) / avg_volume) * 100
-            # store series
-            sr_vlts.append(sr_vlt)
-            print(sr_vlt)
-        # make df_price_fluct
-        df_price_fluct = pd.concat(sr_vlts, axis=1).T.set_index('ts', drop=True)
-        df_price_fluct['symbol'] = self.df['symbol'][0]
-        df_price_fluct['time_scale'] = self.df['time_scale'][0]
-        return df_price_fluct
+def price_fluctuation(
+    df: DataFrame,
+    span_short: int = 6,
+    span_mid: int = 36,
+    span_long: int = 216,
+    back_size: int = 10
+) -> DataFrame:
+    # preparation
+    back_size += 1
+    # make index
+    index = []
+    for col in ['o', 'h', 'l', 'c', 'v']:
+        for n in range(back_size)[::-1]:
+            index.append(f'{col}{n}')
+    sr_vlts = []
+    # process df
+    for i, r in df[span_long:].iterrows():
+        # calc volatilities
+        df_prev = df[['open', 'high', 'low', 'close', 'volume']][i-back_size:i].reset_index(drop=True)
+        df_now = df[['open', 'high', 'low', 'close', 'volume']][i-back_size+1:i+1].reset_index(drop=True)
+        df_vlt = (df_now - df_prev) / df_prev
+        # basis point
+        df_vlt[['open', 'high', 'low', 'close']] = df_vlt[['open', 'high', 'low', 'close']] * 10000
+        # percent
+        df_vlt['volume'] = df_vlt['volume'] * 100
+        # make one line
+        sr_vlt = df_vlt.melt()
+        sr_vlt['col'] = index
+        sr_vlt = sr_vlt.set_index('col')['value']
+        sr_vlt['ts'] = r['timestamp']
+        # calc average
+        avg_short = df[i-span_short:i]['close'].mean()
+        avg_mid = df[i-span_mid:i]['close'].mean()
+        avg_long = df[i-span_long:i]['close'].mean()
+        avg_volume = df[i-span_long:i]['volume'].mean()
+        sr_vlt['avg_s'] = ((df['close'][i-1] - avg_short) / avg_short) * 10000
+        sr_vlt['avg_m'] = ((df['close'][i-1] - avg_mid) / avg_mid) * 10000
+        sr_vlt['avg_l'] = ((df['close'][i-1] - avg_long) / avg_long) * 10000
+        sr_vlt['avg_v'] = ((df['volume'][i-1] - avg_volume) / avg_volume) * 100
+        # store series
+        sr_vlts.append(sr_vlt)
+        print(sr_vlt)
+    # make df_price_fluct
+    df_price_fluct = pd.concat(sr_vlts, axis=1).T.set_index('ts', drop=True)
+    df_price_fluct['symbol'] = df['symbol'][0]
+    df_price_fluct['time_scale'] = df['time_scale'][0]
+    return df_price_fluct
 
 
 def main() -> None:
     rp_alpaca = RepositoryAlpaca()
     df = rp_alpaca.load_df('AAPL', TimeFrame.Day)
-    pr_alpaca = ProcessorAlpaca(df)
-    df_c = pr_alpaca.price_fluctuation()
+    df_c = price_fluctuation(df)
     df_c.to_csv('df_concat.csv')
 
 
