@@ -66,8 +66,7 @@ class ProcessorAlpaca:
         for col in ['o', 'h', 'l', 'c', 'v']:
             for n in range(back_size)[::-1]:
                 index.append(f'{col}{n}')
-        # index.insert(0, 'ts')
-        # index.extend(['avg_s', 'avg_m', 'avg_l', 'avg_v'])
+        df_vlt_mlts = []
         # process df
         for i, r in self.df[span_long:].iterrows():
             # calc volatilities
@@ -87,17 +86,19 @@ class ProcessorAlpaca:
             df_vlt_mlt['avg_m'] = self.df[i-span_mid:i]['close'].mean()
             df_vlt_mlt['avg_l'] = self.df[i-span_long:i]['close'].mean()
             df_vlt_mlt['avg_v'] = self.df[i-span_long:i]['volume'].mean()
+            df_vlt_mlts.append(df_vlt_mlt)
             print(df_vlt_mlt)
-            return
+            df_concated = pd.concat(df_vlt_mlts, axis=1).T.set_index('ts', drop=True)
+        return df_concated
 
 
 def main() -> None:
     rp_alpaca = RepositoryAlpaca()
     df = rp_alpaca.load_df('AAPL', TimeFrame.Day)
     pr_alpaca = ProcessorAlpaca(df)
-    print(pr_alpaca.price_fluctuation())
+    df_c = pr_alpaca.price_fluctuation()
+    print(df_c)
 
 
 if __name__ == '__main__':
     main()
-
