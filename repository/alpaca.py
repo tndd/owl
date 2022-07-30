@@ -21,32 +21,35 @@ class RepositoryAlpaca:
     api: REST = REST()
     engine: Engine = get_engine()
 
-    def download_df_ticker(self, ticker: str, time_frame: TimeFrame, adjustment: str = 'all') -> DataFrame:
+    def download_df_ticker(self, ticker: str, timeframe: TimeFrame, adjustment: str = 'all') -> DataFrame:
         df = self.api.get_bars(
             ticker,
-            time_frame,
+            timeframe,
             self.date_range_start,
             self.date_range_end,
             adjustment=adjustment
         ).df.reset_index()
         df.insert(0, 'symbol', ticker)
-        df.insert(1, 'time_scale', time_frame.value)
+        df.insert(1, 'timeframe', timeframe.value)
         return df
 
-    def store_tickers(self, tickers: List[str], time_frame: TimeFrame, if_exist: str = 'append') -> None:
+    def store_tickers(self, tickers: List[str], timeframe: TimeFrame, if_exist: str = 'append') -> None:
         print('idx | ticker | time_dl | time_store')
         for i, ticker in enumerate(tickers):
             t_start = time()
-            df = self.download_df_ticker(ticker, time_frame)
+            df = self.download_df_ticker(ticker, timeframe)
             t_end_get_df = time()
             df.to_sql(self.table_name, con=self.engine, if_exists=if_exist, index=False)
             t_end_store_db = time()
             print(f'{i}\t{ticker}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
-    def fetch_ticker(self, ticker: str, time_frame: TimeFrame) -> DataFrame:
+    def fetch_ticker(self, ticker: str, timeframe: TimeFrame) -> DataFrame:
         query = load_query('alpaca', 'select', 'symbol')
-        df = pd.read_sql(query, con=self.engine, params=(ticker, time_frame.value))
+        df = pd.read_sql(query, con=self.engine, params=(ticker, timeframe.value))
         return df
+
+    def store_fluctuation(self, ticker: str, timeframe: TimeFrame) -> None:
+        pass
 
 
 def price_fluctuation(
@@ -94,7 +97,7 @@ def price_fluctuation(
     # make df_price_fluct
     df_price_fluct = pd.concat(sr_vlts, axis=1).T.set_index('ts', drop=True)
     df_price_fluct['symbol'] = df['symbol'][0]
-    df_price_fluct['time_scale'] = df['time_scale'][0]
+    df_price_fluct['timeframe'] = df['timeframe'][0]
     return df_price_fluct
 
 

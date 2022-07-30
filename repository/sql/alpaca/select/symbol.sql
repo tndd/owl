@@ -1,6 +1,6 @@
 SELECT
     symbol,
-    time_scale,
+    timeframe,
     `timestamp`,
     `open`,
     high,
@@ -12,5 +12,5 @@ SELECT
 FROM sage_owl.alpaca_hist_bar
 WHERE
     symbol = %s and
-    time_scale = %s
+    timeframe = %s
 ;
