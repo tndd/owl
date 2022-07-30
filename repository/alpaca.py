@@ -66,7 +66,7 @@ class ProcessorAlpaca:
         for col in ['o', 'h', 'l', 'c', 'v']:
             for n in range(back_size)[::-1]:
                 index.append(f'{col}{n}')
-        df_vlt_mlts = []
+        sr_vlts = []
         # process df
         for i, r in self.df[span_long:].iterrows():
             # calc volatilities
@@ -78,17 +78,23 @@ class ProcessorAlpaca:
             # percent
             df_vlt['volume'] = df_vlt['volume'] * 100
             # make one line
-            df_vlt_mlt = df_vlt.melt()
-            df_vlt_mlt['col'] = index
-            df_vlt_mlt = df_vlt_mlt.set_index('col')['value']
-            df_vlt_mlt['ts'] = r['timestamp']
-            df_vlt_mlt['avg_s'] = self.df[i-span_short:i]['close'].mean()
-            df_vlt_mlt['avg_m'] = self.df[i-span_mid:i]['close'].mean()
-            df_vlt_mlt['avg_l'] = self.df[i-span_long:i]['close'].mean()
-            df_vlt_mlt['avg_v'] = self.df[i-span_long:i]['volume'].mean()
-            df_vlt_mlts.append(df_vlt_mlt)
-            print(df_vlt_mlt)
-            df_concated = pd.concat(df_vlt_mlts, axis=1).T.set_index('ts', drop=True)
+            sr_vlt = df_vlt.melt()
+            sr_vlt['col'] = index
+            sr_vlt = sr_vlt.set_index('col')['value']
+            sr_vlt['ts'] = r['timestamp']
+            # calc average
+            avg_short = self.df[i-span_short:i]['close'].mean()
+            avg_mid = self.df[i-span_mid:i]['close'].mean()
+            avg_long = self.df[i-span_long:i]['close'].mean()
+            avg_volume = self.df[i-span_long:i]['volume'].mean()
+            sr_vlt['avg_s'] = ((self.df['close'][i-1] - avg_short) / avg_short) * 10000
+            sr_vlt['avg_m'] = ((self.df['close'][i-1] - avg_mid) / avg_mid) * 10000
+            sr_vlt['avg_l'] = ((self.df['close'][i-1] - avg_long) / avg_long) * 10000
+            sr_vlt['avg_v'] = ((self.df['volume'][i-1] - avg_volume) / avg_volume) * 100
+            # store series
+            sr_vlts.append(sr_vlt)
+            print(sr_vlt)
+        df_concated = pd.concat(sr_vlts, axis=1).T.set_index('ts', drop=True)
         return df_concated
 
 
@@ -97,7 +103,7 @@ def main() -> None:
     df = rp_alpaca.load_df('AAPL', TimeFrame.Day)
     pr_alpaca = ProcessorAlpaca(df)
     df_c = pr_alpaca.price_fluctuation()
-    print(df_c)
+    df_c.to_csv('df_concat.csv')
 
 
 if __name__ == '__main__':
