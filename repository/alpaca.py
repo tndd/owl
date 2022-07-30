@@ -33,7 +33,7 @@ class RepositoryAlpaca:
         df.insert(1, 'time_scale', time_frame.value)
         return df
 
-    def download_tickers_to_db(self, tickers: List[str], time_frame: TimeFrame, if_exist: str = 'append') -> None:
+    def store_tickers(self, tickers: List[str], time_frame: TimeFrame, if_exist: str = 'append') -> None:
         print('idx | ticker | time_dl | time_store')
         for i, ticker in enumerate(tickers):
             t_start = time()
