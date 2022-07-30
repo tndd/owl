@@ -58,24 +58,24 @@ class ProcessorAlpaca:
         span_short: int = 6,
         span_mid: int = 36,
         span_long: int = 216,
-        size: int = 10
+        back_size: int = 10
     ) -> DataFrame:
-        df_0 = self.df[['open', 'high', 'low', 'close', 'volume']][:10].reset_index(drop=True)
-        df_1 = self.df[['open', 'high', 'low', 'close', 'volume']][1:11].reset_index(drop=True)
-        print(df_0.head(3))
-        print('---------------')
-        print(df_1.head(3))
-        print('---------------')
-        df_prd = (df_1 - df_0) / df_0
-        df_prd[['open', 'high', 'low', 'close']] = df_prd[['open', 'high', 'low', 'close']] * 10000
-        df_prd['volume'] = df_prd['volume'] * 100
-        print(df_prd)
-        return
-        # for index, row in self.df[span_long:].iterrows():
-        #     avg_short = self.df[index-span_short:index]['close'].mean()
-        #     avg_mid = self.df[index-span_mid:index]['close'].mean()
-        #     avg_long_cv = self.df[index-span_long:index][['close', 'volume']].mean()
-        #     return
+        back_size += 1
+        for i, r in self.df[span_long:].iterrows():
+            # calc average volatility
+            avg_short = self.df[i-span_short:i]['close'].mean()
+            avg_mid = self.df[i-span_mid:i]['close'].mean()
+            avg_long_cv = self.df[i-span_long:i][['close', 'volume']].mean()
+            # calc volatilities
+            df_prev = self.df[['open', 'high', 'low', 'close', 'volume']][i-back_size:i].reset_index(drop=True)
+            df_now = self.df[['open', 'high', 'low', 'close', 'volume']][i-back_size+1:i+1].reset_index(drop=True)
+            df_vlt = (df_now - df_prev) / df_prev
+            # basis point
+            df_vlt[['open', 'high', 'low', 'close']] = df_vlt[['open', 'high', 'low', 'close']] * 10000
+            # percent
+            df_vlt['volume'] = df_vlt['volume'] * 100
+            print(df_vlt)
+            return
 
 
 def main() -> None:
