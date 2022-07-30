@@ -60,6 +60,7 @@ class ProcessorAlpaca:
         span_long: int = 216,
         back_size: int = 10
     ) -> DataFrame:
+        # preparation
         back_size += 1
         # make index
         index = []
@@ -94,8 +95,11 @@ class ProcessorAlpaca:
             # store series
             sr_vlts.append(sr_vlt)
             print(sr_vlt)
-        df_concated = pd.concat(sr_vlts, axis=1).T.set_index('ts', drop=True)
-        return df_concated
+        # make df_price_fluct
+        df_price_fluct = pd.concat(sr_vlts, axis=1).T.set_index('ts', drop=True)
+        df_price_fluct['symbol'] = self.df['symbol'][0]
+        df_price_fluct['time_scale'] = self.df['time_scale'][0]
+        return df_price_fluct
 
 
 def main() -> None:
