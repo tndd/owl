@@ -64,7 +64,7 @@ class ProcessorAlpaca:
         # make index
         index = []
         for col in ['o', 'h', 'l', 'c', 'v']:
-            for n in range(back_size):
+            for n in range(back_size)[::-1]:
                 index.append(f'{col}{n}')
         index.insert(0, 'ts')
         index.extend(['avg_s', 'avg_m', 'avg_l', 'avg_v'])
