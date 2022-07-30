@@ -5,6 +5,7 @@ Record summarizing the rate of change for n days.
 ### Table
 name | type | describe
 -- | -- | --
+ts | datetime | Timestamp of now.
 o0 | R | Percentage change open price "now" basis point from the previous day.
 o1 | R | Percentage change open price in basis points between "1" day before and the day before.
 ... | ... | ...
