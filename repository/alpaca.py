@@ -43,7 +43,7 @@ class RepositoryAlpaca:
             t_end_store_db = time()
             print(f'{i}\t{ticker}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
-    def load_df(self, ticker: str, time_frame: TimeFrame) -> DataFrame:
+    def fetch_ticker(self, ticker: str, time_frame: TimeFrame) -> DataFrame:
         query = load_query('alpaca', 'select', 'symbol')
         df = pd.read_sql(query, con=self.engine, params=(ticker, time_frame.value))
         return df
@@ -100,7 +100,7 @@ def price_fluctuation(
 
 def main() -> None:
     rp_alpaca = RepositoryAlpaca()
-    df = rp_alpaca.load_df('AAPL', TimeFrame.Day)
+    df = rp_alpaca.fetch_ticker('AAPL', TimeFrame.Day)
     df_c = price_fluctuation(df)
     df_c.to_csv('df_concat.csv')
 
