@@ -19,13 +19,13 @@ def get_engine() -> Engine:
     return create_engine('mysql://{user}:{password}@{host}:{port}/{database}'.format(**connection_config))
 
 
-def load_tickers() -> List[str]:
-    tickers = []
-    paths = glob(f'{pwd}/tickers/*.txt')
+def load_symbols() -> List[str]:
+    symbols = []
+    paths = glob(f'{pwd}/symbols/*.txt')
     for path in paths:
         with open(path, 'r') as f:
-            tickers.extend([t.rstrip('\n') for t in f.readlines()])
-    return tickers
+            symbols.extend([t.rstrip('\n') for t in f.readlines()])
+    return symbols
 
 
 def load_query(group: str, command: str, name: str) -> str:

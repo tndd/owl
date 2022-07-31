@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from pandas import DataFrame
 from sqlalchemy.engine import Engine
 
-from repository.broker import get_engine, load_query, load_tickers
+from repository.broker import get_engine, load_query, load_symbols
 
 load_dotenv()
 
