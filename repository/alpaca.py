@@ -17,6 +17,7 @@ load_dotenv()
 class RepositoryAlpaca:
     date_range_start: str = '2012-07-24'
     date_range_end: str = '2022-07-24'
+    tbl_hist_bar: str = 'alpaca_historical_bar'
     table_name: str = 'alpaca_hist_bar'
     api: REST = REST()
     engine: Engine = get_engine()
@@ -39,7 +40,7 @@ class RepositoryAlpaca:
             t_start = time()
             df = self.download_df_ticker(ticker, timeframe)
             t_end_get_df = time()
-            df.to_sql(self.table_name, con=self.engine, if_exists=if_exist, index=False)
+            df.to_sql(self.tbl_hist_bar, con=self.engine, if_exists=if_exist, index=False)
             t_end_store_db = time()
             print(f'{i}\t{ticker}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
