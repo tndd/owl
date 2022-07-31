@@ -18,7 +18,7 @@ class RepositoryAlpaca:
     date_range_start: str = '2012-07-24'
     date_range_end: str = '2022-07-24'
     tbl_hist_bar: str = 'alpaca_historical_bar'
-    table_name: str = 'alpaca_hist_bar'
+    tbl_price_fluct: str = 'alpaca_price_fluctuation'
     api: REST = REST()
     engine: Engine = get_engine()
 
@@ -49,7 +49,9 @@ class RepositoryAlpaca:
         df = pd.read_sql(query, con=self.engine, params=(ticker, timeframe.value))
         return df
 
-    def store_fluctuation(self, ticker: str, timeframe: TimeFrame) -> None:
+    def store_fluctuation(self, symbol: str, timeframe: TimeFrame, if_exist: str = 'append') -> None:
+        df = self.fetch_ticker(symbol, timeframe)
+        df_fluct = price_fluctuation(df)
         pass
 
 
