@@ -22,35 +22,35 @@ class RepositoryAlpaca:
     api: REST = REST()
     engine: Engine = get_engine()
 
-    def download_df_ticker(self, ticker: str, timeframe: TimeFrame, adjustment: str = 'all') -> DataFrame:
+    def download_df_hist_bar(self, symbol: str, timeframe: TimeFrame, adjustment: str = 'all') -> DataFrame:
         df = self.api.get_bars(
-            ticker,
+            symbol,
             timeframe,
             self.date_range_start,
             self.date_range_end,
             adjustment=adjustment
         ).df.reset_index()
-        df.insert(0, 'symbol', ticker)
+        df.insert(0, 'symbol', symbol)
         df.insert(1, 'timeframe', timeframe.value)
         return df
 
-    def store_tickers(self, tickers: List[str], timeframe: TimeFrame, if_exist: str = 'append') -> None:
-        print('idx | ticker | time_dl | time_store')
-        for i, ticker in enumerate(tickers):
+    def store_hist_bars(self, symbols: List[str], timeframe: TimeFrame, if_exist: str = 'append') -> None:
+        print('idx | symbol | time_dl | time_store')
+        for i, symbol in enumerate(symbols):
             t_start = time()
-            df = self.download_df_ticker(ticker, timeframe)
+            df = self.download_df_hist_bar(symbol, timeframe)
             t_end_get_df = time()
             df.to_sql(self.tbl_hist_bar, con=self.engine, if_exists=if_exist, index=False)
             t_end_store_db = time()
-            print(f'{i}\t{ticker}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
+            print(f'{i}\t{symbol}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
-    def fetch_ticker(self, ticker: str, timeframe: TimeFrame) -> DataFrame:
+    def fetch_hist_bars(self, symbol: str, timeframe: TimeFrame) -> DataFrame:
         query = load_query('alpaca', 'select', 'symbol')
-        df = pd.read_sql(query, con=self.engine, params=(ticker, timeframe.value))
+        df = pd.read_sql(query, con=self.engine, params=(symbol, timeframe.value))
         return df
 
-    def store_fluctuation(self, symbol: str, timeframe: TimeFrame, if_exist: str = 'append') -> None:
-        df = self.fetch_ticker(symbol, timeframe)
+    def store_price_fluct(self, symbol: str, timeframe: TimeFrame, if_exist: str = 'append') -> None:
+        df = self.fetch_hist_bars(symbol, timeframe)
         df_fluct = price_fluctuation(df)
         pass
 
@@ -106,7 +106,7 @@ def price_fluctuation(
 
 def main() -> None:
     rp_alpaca = RepositoryAlpaca()
-    df = rp_alpaca.fetch_ticker('AAPL', TimeFrame.Day)
+    df = rp_alpaca.fetch_hist_bars('AAPL', TimeFrame.Day)
     df_c = price_fluctuation(df)
     df_c.to_csv('df_concat.csv')
 
