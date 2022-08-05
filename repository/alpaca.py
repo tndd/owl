@@ -110,7 +110,7 @@ def main() -> None:
     rp_alpaca = RepositoryAlpaca()
     df = rp_alpaca.fetch_hist_bars('AAPL', TimeFrame.Day)
     df_c = price_fluctuation(df)
-    df_c.to_csv('df_concat.csv')
+    df_c.to_csv('AAPL_1Day.csv')
 
 
 if __name__ == '__main__':
