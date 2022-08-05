@@ -70,6 +70,9 @@ def price_fluctuation(
         for n in range(back_size)[::-1]:
             index.append(f'{col}{n}')
     sr_vlts = []
+    # calc intraday rate
+    df[['high', 'low', 'close']] = ((df[['high', 'low', 'close']].T - df['open']) / df['open']).T * 10000
+    return # TODO remove
     # process df
     for i, r in df[span_long:].iterrows():
         # calc volatilities
