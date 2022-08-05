@@ -71,20 +71,19 @@ def price_fluctuation(
             index.append(f'{col}{n}')
     sr_vlts = []
     # calc intraday rate
-    df[['high', 'low', 'close']] = ((df[['high', 'low', 'close']].T - df['open']) / df['open']).T * 10000
-    return # TODO remove
+    df[['v_high', 'v_low', 'v_close']] = ((df[['high', 'low', 'close']].T - df['open']) / df['open']).T * 10000
     # process df
     for i, r in df[span_long:].iterrows():
         # calc volatilities
-        df_prev = df[['open', 'high', 'low', 'close', 'volume']][i-back_size:i].reset_index(drop=True)
-        df_now = df[['open', 'high', 'low', 'close', 'volume']][i-back_size+1:i+1].reset_index(drop=True)
-        df_vlt = (df_now - df_prev) / df_prev
-        # basis point
-        df_vlt[['open', 'high', 'low', 'close']] = df_vlt[['open', 'high', 'low', 'close']] * 10000
-        # percent
-        df_vlt['volume'] = df_vlt['volume'] * 100
+        df_prev = df[['open', 'volume']][i-back_size:i].reset_index(drop=True)
+        df_now = df[['open', 'v_high', 'v_low', 'v_close', 'volume']][i-back_size+1:i+1].reset_index(drop=True)
+        df_now[['open', 'volume']] = (df_now[['open', 'volume']] - df_prev) / df_prev
+        # calc rate as basis point
+        df_now['open'] = df_now['open'] * 10000
+        # calc rate as percent
+        df_now['volume'] = df_now['volume'] * 100
         # make one line
-        sr_vlt = df_vlt.melt()
+        sr_vlt = df_now.melt()
         sr_vlt['col'] = index
         sr_vlt = sr_vlt.set_index('col')['value']
         sr_vlt['ts'] = r['timestamp']
