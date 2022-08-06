@@ -7,7 +7,7 @@ from alpaca_trade_api.rest import TimeFrame
 from pandas import DataFrame
 from sqlalchemy.engine import Engine
 
-from repository.agent.alpaca import AgentAlpaca
+from repository.api_client.alpaca import APIClientAlpaca
 from repository.broker import get_engine, load_query
 
 
@@ -19,10 +19,10 @@ class RepositoryAlpaca:
 
     def store_hist_bars(self, symbols: List[str], timeframe: TimeFrame, if_exist: str = 'append') -> None:
         print('idx | symbol | time_dl | time_store')
-        ag_alpaca = AgentAlpaca()
+        apic_alpaca = APIClientAlpaca()
         for i, symbol in enumerate(symbols):
             t_start = time()
-            df = ag_alpaca.download_df_hist_bar(symbol, timeframe)
+            df = apic_alpaca.download_df_hist_bar(symbol, timeframe)
             t_end_get_df = time()
             df.to_sql(self.tbl_hist_bar, con=self.engine, if_exists=if_exist, index=False)
             t_end_store_db = time()

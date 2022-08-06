@@ -8,7 +8,7 @@ load_dotenv()
 
 
 @dataclass
-class AgentAlpaca:
+class APIClientAlpaca:
     date_range_start: str = '2012-07-24'
     date_range_end: str = '2022-07-24'
     api: REST = REST()
