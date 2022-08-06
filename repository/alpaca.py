@@ -7,9 +7,8 @@ from alpaca_trade_api.rest import TimeFrame
 from pandas import DataFrame
 from sqlalchemy.engine import Engine
 
-from repository.api_client.alpaca import APIClientAlpaca
 from repository.broker import get_engine, load_query
-
+from collector.alpaca import APIClientAlpaca
 
 @dataclass
 class RepositoryAlpaca:
