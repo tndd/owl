@@ -3,42 +3,26 @@ from time import time
 from typing import List
 
 import pandas as pd
-from alpaca_trade_api.rest import REST, TimeFrame
-from dotenv import load_dotenv
+from alpaca_trade_api.rest import TimeFrame
 from pandas import DataFrame
 from sqlalchemy.engine import Engine
 
-from repository.broker import get_engine, load_query, load_symbols
-
-load_dotenv()
+from repository.agent.alpaca import AgentAlpaca
+from repository.broker import get_engine, load_query
 
 
 @dataclass
 class RepositoryAlpaca:
-    date_range_start: str = '2012-07-24'
-    date_range_end: str = '2022-07-24'
     tbl_hist_bar: str = 'alpaca_historical_bar'
     tbl_price_fluct: str = 'alpaca_price_fluctuation'
-    api: REST = REST()
     engine: Engine = get_engine()
-
-    def download_df_hist_bar(self, symbol: str, timeframe: TimeFrame, adjustment: str = 'all') -> DataFrame:
-        df = self.api.get_bars(
-            symbol,
-            timeframe,
-            self.date_range_start,
-            self.date_range_end,
-            adjustment=adjustment
-        ).df.reset_index()
-        df.insert(0, 'symbol', symbol)
-        df.insert(1, 'timeframe', timeframe.value)
-        return df
 
     def store_hist_bars(self, symbols: List[str], timeframe: TimeFrame, if_exist: str = 'append') -> None:
         print('idx | symbol | time_dl | time_store')
+        ag_alpaca = AgentAlpaca()
         for i, symbol in enumerate(symbols):
             t_start = time()
-            df = self.download_df_hist_bar(symbol, timeframe)
+            df = ag_alpaca.download_df_hist_bar(symbol, timeframe)
             t_end_get_df = time()
             df.to_sql(self.tbl_hist_bar, con=self.engine, if_exists=if_exist, index=False)
             t_end_store_db = time()
