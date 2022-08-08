@@ -9,7 +9,7 @@ from sqlalchemy.engine import Engine
 
 from repository._broker import get_engine, load_query
 from collector.alpaca import APIClientAlpaca
-from processor.alpaca import price_fluctuation
+from processor.historical_bar import ProcessorHistoricalBar
 
 
 @dataclass
@@ -36,14 +36,13 @@ class RepositoryHistoricalBar:
 
     def store_price_fluct(self, symbol: str, timeframe: TimeFrame, if_exist: str = 'append') -> None:
         df = self.fetch_hist_bar(symbol, timeframe)
-        df_fluct = price_fluctuation(df)
         pass
 
 
 def main() -> None:
     rp_hist_bar = RepositoryHistoricalBar()
     df = rp_hist_bar.fetch_hist_bar('AAPL', TimeFrame.Day)
-    df_c = price_fluctuation(df)
+    df_c = ProcessorHistoricalBar(df).price_fluctuation()
     df_c.to_csv('AAPL_1Day.csv')
 
 
