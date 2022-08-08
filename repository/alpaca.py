@@ -29,20 +29,20 @@ class RepositoryAlpaca:
             t_end_store_db = time()
             print(f'{i}\t{symbol}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
-    def fetch_hist_bars(self, symbol: str, timeframe: TimeFrame) -> DataFrame:
+    def fetch_hist_bar(self, symbol: str, timeframe: TimeFrame) -> DataFrame:
         query = load_query('alpaca', 'select', 'symbol')
         df = pd.read_sql(query, con=self.engine, params=(symbol, timeframe.value))
         return df
 
     def store_price_fluct(self, symbol: str, timeframe: TimeFrame, if_exist: str = 'append') -> None:
-        df = self.fetch_hist_bars(symbol, timeframe)
+        df = self.fetch_hist_bar(symbol, timeframe)
         df_fluct = price_fluctuation(df)
         pass
 
 
 def main() -> None:
     rp_alpaca = RepositoryAlpaca()
-    df = rp_alpaca.fetch_hist_bars('AAPL', TimeFrame.Day)
+    df = rp_alpaca.fetch_hist_bar('AAPL', TimeFrame.Day)
     df_c = price_fluctuation(df)
     df_c.to_csv('AAPL_1Day.csv')
 
