@@ -13,7 +13,7 @@ from processor.alpaca import price_fluctuation
 
 
 @dataclass
-class RepositoryAlpaca:
+class RepositoryHistoricalBar:
     tbl_hist_bar: str = 'alpaca_historical_bar'
     tbl_price_fluct: str = 'alpaca_price_fluctuation'
     engine: Engine = get_engine()
@@ -41,8 +41,8 @@ class RepositoryAlpaca:
 
 
 def main() -> None:
-    rp_alpaca = RepositoryAlpaca()
-    df = rp_alpaca.fetch_hist_bar('AAPL', TimeFrame.Day)
+    rp_hist_bar = RepositoryHistoricalBar()
+    df = rp_hist_bar.fetch_hist_bar('AAPL', TimeFrame.Day)
     df_c = price_fluctuation(df)
     df_c.to_csv('AAPL_1Day.csv')
 
