@@ -40,10 +40,7 @@ class RepositoryHistoricalBar:
 
 
 def main() -> None:
-    rp_hist_bar = RepositoryHistoricalBar()
-    df = rp_hist_bar.fetch_hist_bar('AAPL', TimeFrame.Day)
-    df_c = ProcessorHistoricalBar(df).price_fluctuation()
-    df_c.to_csv('AAPL_1Day.csv')
+    pass
 
 
 if __name__ == '__main__':
