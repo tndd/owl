@@ -9,7 +9,6 @@ from sqlalchemy.engine import Engine
 
 from repository._broker import get_engine, load_query
 from collector.alpaca import APIClientAlpaca
-from processor.historical_bar import ProcessorHistoricalBar
 
 
 @dataclass
