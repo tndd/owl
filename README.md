@@ -1,7 +1,7 @@
 # Processor
 The data collected by collector will be processed for training.
 ## HistoricalBar
-### price_fluctuation
+### fluctuation
 Record summarizing the rate of change for n days.
 #### Table
 name | type | describe
