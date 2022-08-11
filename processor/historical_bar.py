@@ -8,7 +8,7 @@ from pandas import DataFrame
 class ProcessorHistoricalBar:
     df_hist_bar: DataFrame
 
-    def price_fluctuation(
+    def fluctuation(
         self,
         span_short: int = 6,
         span_mid: int = 36,
