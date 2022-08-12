@@ -14,7 +14,6 @@ from collector.alpaca import APIClientAlpaca
 @dataclass
 class RepositoryHistoricalBar:
     tbl_hist_bar: str = 'alpaca_historical_bar'
-    tbl_price_fluct: str = 'alpaca_price_fluctuation'
     engine: Engine = get_engine()
 
     def store_hist_bars(self, symbols: List[str], timeframe: TimeFrame, if_exist: str = 'append') -> None:
@@ -32,10 +31,6 @@ class RepositoryHistoricalBar:
         query = load_query('alpaca', 'select', 'symbol')
         df = pd.read_sql(query, con=self.engine, params=(symbol, timeframe.value))
         return df
-
-    def store_price_fluct(self, symbol: str, timeframe: TimeFrame, if_exist: str = 'append') -> None:
-        df = self.fetch_hist_bar(symbol, timeframe)
-        pass
 
 
 def main() -> None:
