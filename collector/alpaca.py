@@ -27,7 +27,7 @@ class APIClientAlpaca:
 
 
 def main() -> None:
-    apic_alpaca = APIClientAlpaca(date_range_end='2016-01-01T00:49:30Z')
+    apic_alpaca = APIClientAlpaca(date_range_start='2016-01-01T00:49:00Z', date_range_end='2016-01-09T00:49:00Z')
     df = apic_alpaca.download_df_hist_bar('AAPL', TimeFrame.Minute)
     print(df)
 
