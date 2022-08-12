@@ -28,7 +28,7 @@ class RepositoryHistoricalBar:
             print(f'{i}\t{symbol}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
     def fetch_hist_bar(self, symbol: str, timeframe: TimeFrame) -> DataFrame:
-        query = load_query('alpaca', 'select', 'symbol')
+        query = load_query('alpaca', 'select', 'hist_bar')
         df = pd.read_sql(query, con=self.engine, params=(symbol, timeframe.value))
         return df
 
