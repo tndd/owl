@@ -32,9 +32,17 @@ class RepositoryHistoricalBar:
         df = pd.read_sql(query, con=self.engine, params=(symbol, timeframe.value))
         return df
 
+    def fetch_latest_date(self, symbol: str, timeframe: TimeFrame) -> str:
+        query = load_query('alpaca', 'select', 'hist_bar_latest_date')
+        df = pd.read_sql(query, con=self.engine, params=(symbol, timeframe.value))
+        return df['timestamp'][0].strftime('%Y-%m-%d %H:%M:%S')
+
 
 def main() -> None:
-    pass
+    rp_hist_bar = RepositoryHistoricalBar()
+    df = rp_hist_bar.fetch_latest_date('AAPL', TimeFrame.Day)
+    print(df)
+    print(type(df))
 
 
 if __name__ == '__main__':
