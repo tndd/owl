@@ -21,7 +21,7 @@ class RepositoryHistoricalBar:
         apic_alpaca = APIClientAlpaca()
         for i, symbol in enumerate(symbols):
             t_start = time()
-            df = apic_alpaca.download_df_hist_bar(symbol, timeframe)
+            df = apic_alpaca.download_hist_bar_df(symbol, timeframe)
             t_end_get_df = time()
             df.to_sql(self.tbl_hist_bar, con=self.engine, if_exists=if_exist, index=False)
             t_end_store_db = time()

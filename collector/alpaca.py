@@ -13,7 +13,7 @@ class APIClientAlpaca:
     date_range_end: str = '2022-07-24'
     api: REST = REST()
 
-    def download_df_hist_bar(self, symbol: str, timeframe: TimeFrame, adjustment: str = 'all') -> DataFrame:
+    def download_hist_bar_df(self, symbol: str, timeframe: TimeFrame, adjustment: str = 'all') -> DataFrame:
         df = self.api.get_bars(
             symbol,
             timeframe,
@@ -28,7 +28,7 @@ class APIClientAlpaca:
 
 def main() -> None:
     apic_alpaca = APIClientAlpaca(date_range_start='2016-01-01T00:49:00Z', date_range_end='2016-01-09T00:49:00Z')
-    df = apic_alpaca.download_df_hist_bar('AAPL', TimeFrame.Minute)
+    df = apic_alpaca.download_hist_bar_df('AAPL', TimeFrame.Minute)
     print(df)
 
 
