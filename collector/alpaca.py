@@ -24,3 +24,13 @@ class APIClientAlpaca:
         df.insert(0, 'symbol', symbol)
         df.insert(1, 'timeframe', timeframe.value)
         return df
+
+
+def main() -> None:
+    apic_alpaca = APIClientAlpaca(date_range_end='2016-01-01T00:49:30Z')
+    df = apic_alpaca.download_df_hist_bar('AAPL', TimeFrame.Minute)
+    print(df)
+
+
+if __name__ == '__main__':
+    main()
