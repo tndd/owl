@@ -55,7 +55,7 @@ class RepositoryHistoricalBar:
 def main() -> None:
     rp_hist_bar = RepositoryHistoricalBar()
     df = rp_hist_bar.fetch_hist_bar('AAPL', TimeFrame.Day)
-    rp_hist_bar.store_hist_bar(df)
+    print(df)
 
 
 if __name__ == '__main__':
