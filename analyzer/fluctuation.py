@@ -1,8 +1,8 @@
-import pandas as pd
+from test.data import BrokerData, DataGroup
 
 
 def main() -> None:
-    df = pd.read_csv('AAPL_1Day.csv')
+    df = BrokerData().load_data(DataGroup.FLUCT, 'AAPL_1Hour')
     x_train = df.drop(['symbol', 'timeframe', 'ts', 'o0', 'h0', 'l0', 'c0', 'v0'], axis=1)
     y_train = df['o0']
     print(x_train)
