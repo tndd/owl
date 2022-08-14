@@ -1,4 +1,4 @@
-from test.data import BrokerData, DataGroup
+from test_zone.data.broker import BrokerData, DataGroup
 
 from repository import RepositoryHistoricalBar
 from repository.resource import BrokerDB
@@ -12,7 +12,8 @@ def get_test_repository() -> RepositoryHistoricalBar:
 def test_store_hist_bar():
     rp = get_test_repository()
     df = BrokerData().load_data(DataGroup.HIST_BAR, 'AAPL_1Day')
-    rp.store_hist_bar(df)
+    print(df)
+    # rp.store_hist_bar(df)
 
 
 def main() -> None:

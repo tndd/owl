@@ -1,4 +1,4 @@
-from test.data import BrokerData, DataGroup
+from test_zone.data.broker import BrokerData, DataGroup
 
 
 def main() -> None:
