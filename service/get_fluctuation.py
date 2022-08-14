@@ -1,8 +1,8 @@
 from alpaca_trade_api.rest import TimeFrame
 from pandas import DataFrame
 
-from repository.historical_bar import RepositoryHistoricalBar
-from processor.historical_bar import ProcessorHistoricalBar
+from repository import RepositoryHistoricalBar
+from processor import ProcessorHistoricalBar
 
 
 def get_fluctuation(symbol: str = 'AAPL', timeframe: TimeFrame = TimeFrame.Day) -> DataFrame:
