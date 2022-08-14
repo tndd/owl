@@ -1,4 +1,4 @@
-REPLACE INTO sage_owl.alpaca_historical_bar(
+REPLACE INTO alpaca_historical_bar(
     symbol,
     timeframe,
     `timestamp`,

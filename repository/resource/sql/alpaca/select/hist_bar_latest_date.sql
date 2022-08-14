@@ -1,6 +1,6 @@
 SELECT
     `timestamp`
-FROM sage_owl.alpaca_historical_bar
+FROM alpaca_historical_bar
 WHERE
     symbol = %s AND
     timeframe = %s
