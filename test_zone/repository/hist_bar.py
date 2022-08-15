@@ -5,7 +5,7 @@ from repository.resource import BrokerDB
 
 
 def get_test_repository() -> RepositoryHistoricalBar:
-    bkr_db = BrokerDB(database='test_sage_owl')
+    bkr_db = BrokerDB(database='__test_sage_owl')
     return RepositoryHistoricalBar(bkr_db=bkr_db)
 
 
