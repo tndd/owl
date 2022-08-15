@@ -1,4 +1,4 @@
-from test_zone.data.broker import BrokerData, DataGroup
+from tests.data.broker import BrokerData, DataGroup
 
 from repository import RepositoryHistoricalBar
 from repository.resource import BrokerDB
