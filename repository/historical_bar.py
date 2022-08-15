@@ -7,13 +7,13 @@ import pandas as pd
 from alpaca_trade_api.rest import TimeFrame
 from pandas import DataFrame
 
+from collector import APIClientAlpaca
 from repository.resource import (
     BrokerDB,
     BrokerQuery,
     QueryCommand,
     QueryGroup
 )
-from collector import APIClientAlpaca
 
 
 @dataclass
