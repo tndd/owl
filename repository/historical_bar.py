@@ -51,11 +51,17 @@ class RepositoryHistoricalBar:
         df = pd.read_sql(query, con=self.bkr_db.engine, params=(symbol, timeframe.value))
         return df['timestamp'][0].strftime('%Y-%m-%dT%H:%M:%SZ')
 
+    def drop_hist_bar(self, symbol: str, timeframe: TimeFrame) -> None:
+        if self.bkr_db.database != 'test_sage_owl':
+            raise Exception('This method is only applicable to the "test" database.')
+        return
+
 
 def main() -> None:
     rp_hist_bar = RepositoryHistoricalBar()
-    df = rp_hist_bar.fetch_hist_bar('AAPL', TimeFrame.Day)
-    print(df)
+    rp_hist_bar.drop_hist_bar('AAPL', TimeFrame.Day)
+    # df = rp_hist_bar.fetch_hist_bar('AAPL', TimeFrame.Day)
+    # print(df)
 
 
 if __name__ == '__main__':
