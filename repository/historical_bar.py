@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 from time import time
 from typing import List
@@ -52,8 +53,9 @@ class RepositoryHistoricalBar:
         return df['timestamp'][0].strftime('%Y-%m-%dT%H:%M:%SZ')
 
     def drop_hist_bar(self, symbol: str, timeframe: TimeFrame) -> None:
-        if self.bkr_db.database != 'test_sage_owl':
-            raise Exception('This method is only applicable to the "test" database.')
+        pattern = r'__test*'
+        if not re.match(pattern, self.bkr_db.database):
+            raise Exception(f'This method is only applicable to the "{pattern}" database.')
         return
 
 
