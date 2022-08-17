@@ -33,6 +33,10 @@ class RepositoryHistoricalBarAlp:
             t_end_store_db = time()
             print(f'{i}\t{symbol}\t{t_end_get_df - t_start}\t{t_end_store_db - t_start}')
 
+    def create_tbl_hist_bar(self) -> None:
+        query = self.bkr_query.load_query(QueryGroup.ALPACA, QueryCommand.CREATE, 'hist_bar')
+        self.bkr_db.execute(query)
+
     def store_hist_bar(self, df_hist_bar: DataFrame) -> None:
         # convert type
         df_hist_bar['timestamp'] = df_hist_bar['timestamp'].astype(str)
