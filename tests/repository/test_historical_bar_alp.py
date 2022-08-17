@@ -1,7 +1,8 @@
 import re
 
-from repository import RepositoryHistoricalBarAlp
+from repository import RepositoryHistoricalBarAlp, TimeframeAlpRp
 from repository.resource import BrokerDB
+from tests.mock_data.broker import BrokerMockData, DataGroup
 
 TEST_DB_NAME = '__test_sage_owl'
 
@@ -17,6 +18,16 @@ def drop_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     if not re.match(pattern, db_name):
         raise Exception(f'This method can only be called on "{pattern}" database.')
     query = f'drop table if exists {rp_hist_bar.tbl_hist_bar};'
+    rp_hist_bar.bkr_db.execute(query)
+
+
+def truncate_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
+    # TODO: decorator
+    pattern = r'__test*'
+    db_name = rp_hist_bar.bkr_db.database
+    if not re.match(pattern, db_name):
+        raise Exception(f'This method can only be called on "{pattern}" database.')
+    query = f'truncate table {rp_hist_bar.tbl_hist_bar};'
     rp_hist_bar.bkr_db.execute(query)
 
 
@@ -43,16 +54,21 @@ def test_create_tbl_hist_bar() -> None:
     assert expd_scheme == rp.bkr_db.cur.fetchall()
 
 
-
-# def test_store_hist_bar():
-#     rp = get_repository_for_test()
-#     df = BrokerMockData().load_data(DataGroup.HIST_BAR, 'AAPL_1Day')
-#     print(df)
-#     rp.store_hist_bar(df)
+def test_store_fetch() -> None:
+    rp = get_repository_for_test()
+    # clean table
+    truncate_table_hist_bar(rp)
+    # store mock data
+    mock_df = BrokerMockData().load_mock_df(DataGroup.HIST_BAR_ALP, 'AAPL_1Day')
+    rp.store_hist_bar(mock_df)
+    # fetch mock data
+    fetch_df = rp.fetch_hist_bar('AAPL', TimeframeAlpRp.DAY)
+    # validate mock & fetched data
+    assert mock_df.to_csv() == fetch_df.to_csv()
 
 
 def main() -> None:
-    test_create_tbl_hist_bar()
+    test_store_fetch()
 
 
 if __name__ == '__main__':

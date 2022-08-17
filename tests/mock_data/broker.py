@@ -7,7 +7,7 @@ from pandas import DataFrame
 
 
 class DataGroup(Enum):
-    HIST_BAR = 'historical_bar_alp'
+    HIST_BAR_ALP = 'historical_bar_alp'
     FLUCT = 'fluctuation'
 
 
@@ -15,14 +15,14 @@ class DataGroup(Enum):
 class BrokerMockData:
     pwd: str = Path(__file__).resolve().parent
 
-    def load_data(self, group: DataGroup, name: str) -> DataFrame:
+    def load_mock_df(self, group: DataGroup, name: str) -> DataFrame:
         path = f'{self.pwd}/{group.value}/{name}.csv'
         return pd.read_csv(path)
 
 
 def main() -> None:
     bd = BrokerMockData()
-    df = bd.load_data(DataGroup.HIST_BAR, 'AAPL_1Day')
+    df = bd.load_mock_df(DataGroup.HIST_BAR_ALP, 'AAPL_1Day')
     print(df)
 
 
