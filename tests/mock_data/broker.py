@@ -7,12 +7,12 @@ from pandas import DataFrame
 
 
 class DataGroup(Enum):
-    HIST_BAR = 'historical_bar'
+    HIST_BAR = 'historical_bar_alp'
     FLUCT = 'fluctuation'
 
 
 @dataclass
-class BrokerData:
+class BrokerMockData:
     pwd: str = Path(__file__).resolve().parent
 
     def load_data(self, group: DataGroup, name: str) -> DataFrame:
@@ -21,7 +21,7 @@ class BrokerData:
 
 
 def main() -> None:
-    bd = BrokerData()
+    bd = BrokerMockData()
     df = bd.load_data(DataGroup.HIST_BAR, 'AAPL_1Day')
     print(df)
 

@@ -1,6 +1,6 @@
 from repository import RepositoryHistoricalBarAlp
 from repository.resource import BrokerDB
-from tests.data.broker import BrokerData, DataGroup
+from tests.mock_data.broker import BrokerMockData, DataGroup
 
 
 def get_test_repository() -> RepositoryHistoricalBarAlp:
@@ -10,7 +10,7 @@ def get_test_repository() -> RepositoryHistoricalBarAlp:
 
 def test_store_hist_bar():
     rp = get_test_repository()
-    df = BrokerData().load_data(DataGroup.HIST_BAR, 'AAPL_1Day')
+    df = BrokerMockData().load_data(DataGroup.HIST_BAR, 'AAPL_1Day')
     print(df)
     # rp.store_hist_bar(df)
 
