@@ -52,7 +52,7 @@ class RepositoryHistoricalBar:
         df = pd.read_sql(query, con=self.bkr_db.engine, params=(symbol, timeframe.value))
         return df['timestamp'][0].strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    def drop_hist_bar(self, symbol: str, timeframe: TimeFrame) -> None:
+    def _drop_hist_bar(self, symbol: str, timeframe: TimeFrame) -> None:
         pattern = r'__test*'
         if not re.match(pattern, self.bkr_db.database):
             raise Exception(f'This method is only applicable to the "{pattern}" database.')
@@ -61,7 +61,7 @@ class RepositoryHistoricalBar:
 
 def main() -> None:
     rp_hist_bar = RepositoryHistoricalBar()
-    rp_hist_bar.drop_hist_bar('AAPL', TimeFrame.Day)
+    rp_hist_bar._drop_hist_bar('AAPL', TimeFrame.Day)
     # df = rp_hist_bar.fetch_hist_bar('AAPL', TimeFrame.Day)
     # print(df)
 
