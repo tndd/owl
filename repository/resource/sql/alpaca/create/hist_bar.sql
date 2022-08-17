@@ -1,4 +1,4 @@
-CREATE TABLE `alpaca_historical_bar` (
+CREATE TABLE IF NOT EXISTS `alpaca_historical_bar` (
   `symbol` varchar(64) NOT NULL,
   `timeframe` varchar(64) NOT NULL,
   `timestamp` datetime NOT NULL,
