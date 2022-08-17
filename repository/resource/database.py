@@ -39,6 +39,10 @@ class BrokerDB:
     def get_conn_mc(self) -> MySQLConnection:
         return connect(**self.make_db_config())
 
+    def execute(self, query: str) -> None:
+        self.cur.execute(query)
+        self.conn.commit()
+
     def execute_many(self, query: str, params: List[tuple]) -> None:
         self.cur.executemany(query, params)
         self.conn.commit()
