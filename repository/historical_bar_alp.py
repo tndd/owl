@@ -17,7 +17,7 @@ from repository.resource import (
 
 
 @dataclass
-class RepositoryHistoricalBar:
+class RepositoryHistoricalBarAlp:
     tbl_hist_bar: str = 'alpaca_historical_bar'
     bkr_db: BrokerDB = BrokerDB()
     bkr_query: BrokerQuery = BrokerQuery()
@@ -60,7 +60,7 @@ class RepositoryHistoricalBar:
 
 
 def main() -> None:
-    rp_hist_bar = RepositoryHistoricalBar()
+    rp_hist_bar = RepositoryHistoricalBarAlp()
     rp_hist_bar._drop_hist_bar('AAPL', TimeFrame.Day)
     # df = rp_hist_bar.fetch_hist_bar('AAPL', TimeFrame.Day)
     # print(df)

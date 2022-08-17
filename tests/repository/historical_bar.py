@@ -1,12 +1,11 @@
+from repository import RepositoryHistoricalBarAlp
+from repository.resource import BrokerDB
 from tests.data.broker import BrokerData, DataGroup
 
-from repository import RepositoryHistoricalBar
-from repository.resource import BrokerDB
 
-
-def get_test_repository() -> RepositoryHistoricalBar:
+def get_test_repository() -> RepositoryHistoricalBarAlp:
     bkr_db = BrokerDB(database='__test_sage_owl')
-    return RepositoryHistoricalBar(bkr_db=bkr_db)
+    return RepositoryHistoricalBarAlp(bkr_db=bkr_db)
 
 
 def test_store_hist_bar():
