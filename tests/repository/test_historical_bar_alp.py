@@ -1,5 +1,7 @@
 import re
 
+import pytest
+
 from repository import RepositoryHistoricalBarAlp
 from repository.resource import BrokerDB
 from repository.type import Timeframe
@@ -8,9 +10,10 @@ from tests.mock_data.broker import BrokerMockData, DataGroup
 TEST_DB_NAME = '__test_sage_owl'
 
 
-def get_repository_for_test(database: str = TEST_DB_NAME) -> RepositoryHistoricalBarAlp:
+@pytest.fixture
+def test_rp(database: str = TEST_DB_NAME) -> RepositoryHistoricalBarAlp:
     bkr_db = BrokerDB(database=database)
-    return RepositoryHistoricalBarAlp(bkr_db=bkr_db)
+    yield RepositoryHistoricalBarAlp(bkr_db=bkr_db)
 
 
 def drop_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
@@ -32,12 +35,11 @@ def truncate_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     rp_hist_bar.bkr_db.execute(query)
 
 
-def test_create_tbl_hist_bar() -> None:
-    rp = get_repository_for_test()
+def test_create_tbl_hist_bar(test_rp) -> None:
     # clean table
-    drop_table_hist_bar(rp)
+    drop_table_hist_bar(test_rp)
     # create table
-    rp.create_tbl_hist_bar()
+    test_rp.create_tbl_hist_bar()
     # test create_tbl_hist_bar
     expd_scheme = [
         ('symbol', b'varchar(64)', 'NO', 'PRI', None, ''),
@@ -51,25 +53,24 @@ def test_create_tbl_hist_bar() -> None:
         ('trade_count', b'int unsigned', 'NO', '', None, ''),
         ('vwap', b'decimal(12,6)', 'NO', '', None, '')
     ]
-    rp.bkr_db.cur.execute(f'DESC {rp.tbl_hist_bar};')
-    assert expd_scheme == rp.bkr_db.cur.fetchall()
+    test_rp.bkr_db.cur.execute(f'DESC {test_rp.tbl_hist_bar};')
+    assert expd_scheme == test_rp.bkr_db.cur.fetchall()
 
 
-def test_store_fetch() -> None:
-    rp = get_repository_for_test()
+def test_store_fetch(test_rp) -> None:
     # clean table
-    truncate_table_hist_bar(rp)
+    truncate_table_hist_bar(test_rp)
     # store mock data
     mock_df = BrokerMockData().load_mock_df(DataGroup.HIST_BAR_ALP, 'AAPL_1Day')
-    rp.store_hist_bar(mock_df)
+    test_rp.store_hist_bar(mock_df)
     # fetch mock data
-    fetch_df = rp.fetch_hist_bar('AAPL', Timeframe.DAY)
+    fetch_df = test_rp.fetch_hist_bar('AAPL', Timeframe.DAY)
     # validate mock & fetched data
     assert mock_df.to_csv() == fetch_df.to_csv()
 
 
 def main() -> None:
-    test_store_fetch()
+    pass
 
 
 if __name__ == '__main__':
