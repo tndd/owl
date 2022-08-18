@@ -16,21 +16,21 @@ def test_rp(database: str = TEST_DB_NAME) -> RepositoryHistoricalBarAlp:
     yield RepositoryHistoricalBarAlp(bkr_db=bkr_db)
 
 
-def drop_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
+def check_is_test_db(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     pattern = r'__test*'
     db_name = rp_hist_bar.bkr_db.database
     if not re.match(pattern, db_name):
         raise Exception(f'This method can only be called on "{pattern}" database.')
+
+
+def drop_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
+    check_is_test_db(rp_hist_bar)
     query = f'drop table if exists {rp_hist_bar.tbl_hist_bar};'
     rp_hist_bar.bkr_db.execute(query)
 
 
 def truncate_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
-    # TODO: decorator
-    pattern = r'__test*'
-    db_name = rp_hist_bar.bkr_db.database
-    if not re.match(pattern, db_name):
-        raise Exception(f'This method can only be called on "{pattern}" database.')
+    check_is_test_db(rp_hist_bar)
     query = f'truncate table {rp_hist_bar.tbl_hist_bar};'
     rp_hist_bar.bkr_db.execute(query)
 
