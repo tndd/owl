@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
-import pandas as pd
-from pandas import DataFrame
+from pandas import DataFrame, concat
 
 
 @dataclass
@@ -53,7 +52,7 @@ class ProcessorHistoricalBar:
             sr_vlts.append(sr_vlt)
             print(sr_vlt)
         # make df_price_fluct
-        df_price_fluct = pd.concat(sr_vlts, axis=1).T.set_index('ts', drop=True)
+        df_price_fluct = concat(sr_vlts, axis=1).T.set_index('ts', drop=True)
         df_price_fluct['symbol'] = self.df_hist_bar['symbol'][0]
         df_price_fluct['timeframe'] = self.df_hist_bar['timeframe'][0]
         return df_price_fluct
