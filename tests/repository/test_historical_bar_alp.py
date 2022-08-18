@@ -1,7 +1,8 @@
 import re
 
-from repository import RepositoryHistoricalBarAlp, TimeframeAlpRp
+from repository import RepositoryHistoricalBarAlp
 from repository.resource import BrokerDB
+from repository.type import Timeframe
 from tests.mock_data.broker import BrokerMockData, DataGroup
 
 TEST_DB_NAME = '__test_sage_owl'
@@ -62,7 +63,7 @@ def test_store_fetch() -> None:
     mock_df = BrokerMockData().load_mock_df(DataGroup.HIST_BAR_ALP, 'AAPL_1Day')
     rp.store_hist_bar(mock_df)
     # fetch mock data
-    fetch_df = rp.fetch_hist_bar('AAPL', TimeframeAlpRp.DAY)
+    fetch_df = rp.fetch_hist_bar('AAPL', Timeframe.DAY)
     # validate mock & fetched data
     assert mock_df.to_csv() == fetch_df.to_csv()
 

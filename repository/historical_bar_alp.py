@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from enum import Enum
 
 from pandas import DataFrame, read_sql
 
@@ -9,14 +8,7 @@ from repository.resource import (
     QueryCommand,
     QueryGroup
 )
-
-
-class TimeframeAlpRp(Enum):
-    MIN = "1Min"
-    HOUR = "1Hour"
-    DAY = "1Day"
-    WEEK = "1Week"
-    MONTH = "1Month"
+from repository.type import Timeframe
 
 
 @dataclass
@@ -38,12 +30,12 @@ class RepositoryHistoricalBarAlp:
         # execute
         self.bkr_db.execute_many(query, params)
 
-    def fetch_hist_bar(self, symbol: str, timeframe: TimeframeAlpRp) -> DataFrame:
+    def fetch_hist_bar(self, symbol: str, timeframe: Timeframe) -> DataFrame:
         query = self.bkr_query.load_query(QueryGroup.ALPACA, QueryCommand.SELECT, 'hist_bar')
         df = read_sql(query, con=self.bkr_db.engine, params=(symbol, timeframe.value))
         return df
 
-    def fetch_latest_date(self, symbol: str, timeframe: TimeframeAlpRp) -> str:
+    def fetch_latest_date(self, symbol: str, timeframe: Timeframe) -> str:
         query = self.bkr_query.load_query(QueryGroup.ALPACA, QueryCommand.SELECT, 'hist_bar_latest_date')
         df = read_sql(query, con=self.bkr_db.engine, params=(symbol, timeframe.value))
         return df['timestamp'][0].strftime('%Y-%m-%dT%H:%M:%SZ')
