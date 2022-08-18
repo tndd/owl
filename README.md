@@ -5,8 +5,8 @@ Raw **data** collected by collector.
 ## HistoricalBarFmp
 ### Scheme
 
-# Information
-The data is processed for analysis and become **information**.
+# ProcessedData
+The *data* is processed for analysis and become **processed_data**.
 ## Fluctuation
 Record summarizing the rate of change for n days.
 
@@ -46,6 +46,14 @@ n | 10 | It goes back to "n" days ago.
 short | 6 | "short"-term range in average calculation.
 middle | 36 | "middle"-term range in average calculation.
 long | 216 | "lomg"-term range in average calculation.
+
+# information
+The result of analyzing the *processed_data* is **information**.
+
+# inteligence
+**Inteligence** is generated from *information*.
+
+It will be guide future actions.
 
 # DataFlow
 ```mermaid
