@@ -28,7 +28,7 @@ class RepositoryHistoricalBarAlp:
         query = self.bkr_query.load_query(QueryGroup.ALPACA, QueryCommand.INSERT, 'hist_bar')
         params = df_hist_bar.to_records(index=False).tolist()
         # execute
-        self.bkr_db.execute_many(query, params)
+        self.bkr_db.execute_many(query, params) # noqa
 
     def fetch_hist_bar(self, symbol: str, timeframe: Timeframe) -> DataFrame:
         query = self.bkr_query.load_query(QueryGroup.ALPACA, QueryCommand.SELECT, 'hist_bar')
