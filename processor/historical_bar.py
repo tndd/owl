@@ -27,7 +27,7 @@ class ProcessorHistoricalBar:
         self.df_hist_bar[['v_high', 'v_low', 'v_close']] = ((self.df_hist_bar[['high', 'low', 'close']].T - self.df_hist_bar['open']) / self.df_hist_bar['open']).T * 10000
         # process df
         for i, r in self.df_hist_bar[span_long:].iterrows():
-            # calc volatilities
+            # calc volatilises
             df_prev = self.df_hist_bar[['open', 'volume']][i-back_size:i].reset_index(drop=True)
             df_now = self.df_hist_bar[['open', 'v_high', 'v_low', 'v_close', 'volume']][i-back_size+1:i+1].reset_index(drop=True)
             df_now[['open', 'volume']] = (df_now[['open', 'volume']] - df_prev) / df_prev
