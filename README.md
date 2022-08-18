@@ -1,9 +1,16 @@
-# Processor
-The data collected by collector will be processed for training.
-## HistoricalBar
-### fluctuation
+# Data
+Raw **data** collected by collector.
+## HistoricalBarAlp
+### Scheme
+## HistoricalBarFmp
+### Scheme
+
+# Information
+The data is processed for analysis and become **information**.
+## Fluctuation
 Record summarizing the rate of change for n days.
-#### Table
+
+### Scheme
 name | type | describe
 -- | -- | --
 ts | datetime | Timestamp of now.
@@ -32,10 +39,17 @@ avg_m | R | Average of closing prices over a {middle} period of time.
 avg_l | R | Average of closing prices over a {long} period of time.
 avg_v | R | The average of volume over a {long} period of time.
 
-#### Defalult variable value
+### Variables
 variable | value | description
 -- | -- | --
 n | 10 | It goes back to "n" days ago.
 short | 6 | "short"-term range in average calculation.
 middle | 36 | "middle"-term range in average calculation.
 long | 216 | "lomg"-term range in average calculation.
+
+# DataFlow
+```mermaid
+stateDiagram
+HistoricalBarAlp --> Fluctuation
+HistoricalBarFmp --> Fluctuation
+```
