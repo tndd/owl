@@ -35,7 +35,7 @@ def truncate_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     rp_hist_bar.bkr_db.execute(query)
 
 
-def test_create_tbl_hist_bar(test_rp) -> None:
+def test_create_tbl_hist_bar(test_rp: RepositoryHistoricalBarAlp) -> None:
     # clean table
     drop_table_hist_bar(test_rp)
     # create table
@@ -57,7 +57,7 @@ def test_create_tbl_hist_bar(test_rp) -> None:
     assert expd_scheme == test_rp.bkr_db.cur.fetchall()
 
 
-def test_store_fetch(test_rp) -> None:
+def test_store_fetch(test_rp: RepositoryHistoricalBarAlp) -> None:
     # clean table
     truncate_table_hist_bar(test_rp)
     # store mock data
