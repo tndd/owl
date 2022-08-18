@@ -13,7 +13,7 @@ TEST_DB_NAME = '__test_sage_owl'
 @pytest.fixture
 def test_rp(database: str = TEST_DB_NAME) -> RepositoryHistoricalBarAlp:
     bkr_db = BrokerDB(database=database)
-    yield RepositoryHistoricalBarAlp(bkr_db=bkr_db)
+    return RepositoryHistoricalBarAlp(bkr_db=bkr_db)
 
 
 def check_is_test_db(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
