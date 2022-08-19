@@ -75,7 +75,7 @@ The result of analyzing the *processed_data* is **information**.
 # Intelligence
 **Intelligence** is generated from *information*.
 
-It will be guide future actions.
+It will guide future actions.
 
 # DataFlow
 ```mermaid
