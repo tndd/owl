@@ -25,13 +25,13 @@ def check_is_test_db(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
 
 def drop_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     check_is_test_db(rp_hist_bar)
-    query = f'drop table if exists {rp_hist_bar.tbl_hist_bar};'
+    query = f'drop table if exists {rp_hist_bar.tbl_name_hist_bar};'
     rp_hist_bar.bkr_db.execute(query)
 
 
 def truncate_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     check_is_test_db(rp_hist_bar)
-    query = f'truncate table {rp_hist_bar.tbl_hist_bar};'
+    query = f'truncate table {rp_hist_bar.tbl_name_hist_bar};'
     rp_hist_bar.bkr_db.execute(query)
 
 
@@ -53,7 +53,7 @@ def test_create_tbl_hist_bar(test_rp: RepositoryHistoricalBarAlp) -> None:
         ('trade_count', b'int unsigned', 'NO', '', None, ''),
         ('vwap', b'decimal(12,6)', 'NO', '', None, '')
     ]
-    test_rp.bkr_db.cur.execute(f'DESC {test_rp.tbl_hist_bar};')
+    test_rp.bkr_db.cur.execute(f'DESC {test_rp.tbl_name_hist_bar};')
     assert expd_scheme == test_rp.bkr_db.cur.fetchall()
 
 
