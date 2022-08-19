@@ -4,29 +4,26 @@ from pathlib import Path
 
 
 class QueryGroup(Enum):
-    ALPACA = 'alpaca'
+    HISTORICAL_BAR_ALP = 'historical_bar_alp'
+    HISTORICAL_BAR_FMP = 'historical_bar_fmp'
 
-
-class QueryCommand(Enum):
-    CREATE = 'create'
-    INSERT = 'insert'
-    SELECT = 'select'
 
 
 @dataclass
 class BrokerQuery:
+    group: QueryGroup
     pwd: str = Path(__file__).resolve().parent
 
-    def load_query(self, group: QueryGroup, command: QueryCommand, name: str) -> str:
-        path = f'{self.pwd}/sql/{group.value}/{command.value}/{name}.sql'
+    def load_query(self, name: str) -> str:
+        path = f'{self.pwd}/sql/{self.group.value}/{name}.sql'
         with open(path, 'r') as f:
             query = f.read()
         return query
 
 
 def main() -> None:
-    bq = BrokerQuery()
-    q = bq.load_query(QueryGroup.ALPACA, QueryCommand.SELECT, 'hist_bar')
+    bq = BrokerQuery(QueryGroup.HISTORICAL_BAR_ALP)
+    q = bq.load_query('select')
     print(q)
 
 
