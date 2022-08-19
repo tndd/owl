@@ -40,12 +40,12 @@ Record summarizing the rate of change for n days.
 | avg_v | R        | The average of volume over a {long} period of time.                                                        |
 
 ### Variables
-variable | value | description
--- | -- | --
-n | 10 | It goes back to "n" days ago.
-short | 6 | "short"-term range in average calculation.
-middle | 36 | "middle"-term range in average calculation.
-long | 216 | "long"-term range in average calculation.
+| variable | value | description                                 |
+|----------|-------|---------------------------------------------|
+| n        | 10    | It goes back to "n" days ago.               |
+| short    | 6     | "short"-term range in average calculation.  |
+| middle   | 36    | "middle"-term range in average calculation. |
+| long     | 216   | "long"-term range in average calculation.   |
 
 # Information
 The result of analyzing the *processed_data* is **information**.
