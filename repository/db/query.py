@@ -8,7 +8,6 @@ class QueryGroup(Enum):
     HISTORICAL_BAR_FMP = 'historical_bar_fmp'
 
 
-
 @dataclass
 class BrokerQuery:
     group: QueryGroup
