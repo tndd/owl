@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from pandas import DataFrame, read_sql
 
-from repository.resource import (
+from repository.db import (
     BrokerDB,
     BrokerQuery,
     QueryGroup

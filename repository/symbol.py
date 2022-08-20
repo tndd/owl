@@ -15,7 +15,7 @@ class RepositorySymbol:
     pwd: str = Path(__file__).resolve().parent
 
     def fetch_symbols(self, group: SymbolGroup = SymbolGroup.ALL) -> List[str]:
-        with open(f'{self.pwd}/resource/symbols.yml') as f:
+        with open(f'{self.pwd}/general/symbols.yml') as f:
             symbols = yaml.safe_load(f)
         if group == SymbolGroup.ALL:
             return sum(list(symbols.values()), [])

@@ -3,7 +3,7 @@ import re
 import pytest
 
 from repository import RepositoryHistoricalBarAlp
-from repository.resource import BrokerDB
+from repository.db import BrokerDB
 from repository.type import Timeframe
 from tests.mock_data.broker import BrokerMockData, DataGroup
 
