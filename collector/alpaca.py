@@ -25,10 +25,14 @@ class APIClientAlpaca:
         df.insert(1, 'timeframe', timeframe.value)
         return df
 
+    def download_df_assets(self) -> DataFrame:
+        assets = [x.__dict__['_raw'] for x in self.api.list_assets()]
+        return DataFrame(assets).set_index('id')
+
 
 def main() -> None:
     apic_alpaca = APIClientAlpaca(date_range_start='2016-01-01T00:49:00Z', date_range_end='2016-01-09T00:49:00Z')
-    df = apic_alpaca.download_hist_bar_df('AAPL', TimeFrame.Minute)
+    df = apic_alpaca.download_df_assets()
     print(df)
 
 
