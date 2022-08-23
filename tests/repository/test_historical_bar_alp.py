@@ -42,16 +42,16 @@ def test_create_tbl_hist_bar(test_rp: RepositoryHistoricalBarAlp) -> None:
     test_rp.create_tbl_hist_bar()
     # test create_tbl_hist_bar
     expd_scheme = [
-        ('symbol', b'varchar(64)', 'NO', 'PRI', None, ''),
-        ('timeframe', b'varchar(64)', 'NO', 'PRI', None, ''),
+        ('symbol', b'varchar(32)', 'NO', 'PRI', None, ''),
+        ('timeframe', b'varchar(32)', 'NO', 'PRI', None, ''),
         ('timestamp', b'datetime', 'NO', 'PRI', None, ''),
-        ('open', b'decimal(12,6)', 'NO', '', None, ''),
-        ('high', b'decimal(12,6)', 'NO', '', None, ''),
-        ('low', b'decimal(12,6)', 'NO', '', None, ''),
-        ('close', b'decimal(12,6)', 'NO', '', None, ''),
+        ('open', b'decimal(16,8)', 'NO', '', None, ''),
+        ('high', b'decimal(16,8)', 'NO', '', None, ''),
+        ('low', b'decimal(16,8)', 'NO', '', None, ''),
+        ('close', b'decimal(16,8)', 'NO', '', None, ''),
         ('volume', b'int unsigned', 'NO', '', None, ''),
         ('trade_count', b'int unsigned', 'NO', '', None, ''),
-        ('vwap', b'decimal(12,6)', 'NO', '', None, '')
+        ('vwap', b'decimal(16,8)', 'NO', '', None, '')
     ]
     test_rp.bkr_db.cur.execute(f'DESC {test_rp.tbl_name};')
     assert expd_scheme == test_rp.bkr_db.cur.fetchall()
