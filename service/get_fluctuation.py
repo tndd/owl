@@ -7,7 +7,7 @@ from repository import RepositoryHistoricalBarAlp
 
 def get_fluctuation(symbol: str = 'AAPL', timeframe: TimeFrame = TimeFrame.Day) -> DataFrame:
     rp_hist_bar = RepositoryHistoricalBarAlp()
-    df_hist_bar = rp_hist_bar.fetch_hist_bar(symbol, timeframe)
+    df_hist_bar = rp_hist_bar.fetch(symbol, timeframe)
     df_fluct = ProcessorHistoricalBar(df_hist_bar).fluctuation()
     df_fluct.to_csv(f'{symbol}_{timeframe.value}.csv')
     return df_fluct

@@ -11,7 +11,7 @@ TEST_DB_NAME = '__test_sage_owl'
 
 
 @pytest.fixture
-def test_rp(database: str = TEST_DB_NAME) -> RepositoryHistoricalBarAlp:
+def rp_test(database: str = TEST_DB_NAME) -> RepositoryHistoricalBarAlp:
     bkr_db = BrokerDB(database=database)
     return RepositoryHistoricalBarAlp(bkr_db=bkr_db)
 
@@ -35,11 +35,11 @@ def truncate_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     rp_hist_bar.bkr_db.execute(query)
 
 
-def test_create_tbl_hist_bar(test_rp: RepositoryHistoricalBarAlp) -> None:
+def test_create_table(rp_test) -> None:
     # clean table
-    drop_table_hist_bar(test_rp)
+    drop_table_hist_bar(rp_test)
     # create table
-    test_rp.create_tbl_hist_bar()
+    rp_test.create_table()
     # test create_tbl_hist_bar
     expd_scheme = [
         ('symbol', b'varchar(32)', 'NO', 'PRI', None, ''),
@@ -53,18 +53,18 @@ def test_create_tbl_hist_bar(test_rp: RepositoryHistoricalBarAlp) -> None:
         ('trade_count', b'int unsigned', 'NO', '', None, ''),
         ('vwap', b'decimal(16,8)', 'NO', '', None, '')
     ]
-    test_rp.bkr_db.cur.execute(f'DESC {test_rp.tbl_name};')
-    assert expd_scheme == test_rp.bkr_db.cur.fetchall()
+    rp_test.bkr_db.cur.execute(f'DESC {rp_test.tbl_name};')
+    assert expd_scheme == rp_test.bkr_db.cur.fetchall()
 
 
-def test_store_fetch(test_rp: RepositoryHistoricalBarAlp) -> None:
+def test_store_fetch(rp_test) -> None:
     # clean table
-    truncate_table_hist_bar(test_rp)
+    truncate_table_hist_bar(rp_test)
     # store mock data
     mock_df = BrokerMockData().load_mock_df(DataGroup.HIST_BAR_ALP, 'AAPL_1Day')
-    test_rp.store_hist_bar(mock_df)
+    rp_test.store(mock_df)
     # fetch mock data
-    fetch_df = test_rp.fetch_hist_bar('AAPL', Timeframe.DAY)
+    fetch_df = rp_test.fetch('AAPL', Timeframe.DAY)
     # validate mock & fetched data
     assert mock_df.to_csv() == fetch_df.to_csv()
 
