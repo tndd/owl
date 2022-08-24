@@ -7,7 +7,7 @@ from pandas import DataFrame
 class RepositorySymbolAlp:
     tbl_name: str = 'alpaca_assets'
 
-    def create_tbl(self) -> None:
+    def prepare(self) -> None:
         pass
 
     def store(self, df: DataFrame) -> None:
