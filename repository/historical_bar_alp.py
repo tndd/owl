@@ -16,7 +16,7 @@ class RepositoryHistoricalBarAlp:
     bkr_db: BrokerDB = BrokerDB()
     bkr_query: BrokerQuery = BrokerQuery(QueryGroup.HISTORICAL_BAR_ALP)
 
-    def create_table(self) -> None:
+    def prepare(self) -> None:
         query = self.bkr_query.load_query('ddl')
         self.bkr_db.execute(query)
 

@@ -35,11 +35,11 @@ def truncate_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     rp_hist_bar.bkr_db.execute(query)
 
 
-def test_create_table(rp_test) -> None:
+def test_prepare(rp_test) -> None:
     # clean table
     drop_table_hist_bar(rp_test)
     # create table
-    rp_test.create_table()
+    rp_test.prepare()
     # test create_tbl_hist_bar
     expd_scheme = [
         ('symbol', b'varchar(32)', 'NO', 'PRI', None, ''),
