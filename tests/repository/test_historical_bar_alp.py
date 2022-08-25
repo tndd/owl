@@ -7,12 +7,13 @@ from repository.db import BrokerDB
 from repository.type import Timeframe
 from tests.mock_data.broker import BrokerMockData, DataGroup
 
-TEST_DB_NAME = '__test_sage_owl'
+NAME_TEST_DB = '__test_sage_owl'
+NAME_TBL = 'alpaca_historical_bar'
 
 
 @pytest.fixture
-def rp_test(database: str = TEST_DB_NAME) -> RepositoryHistoricalBarAlp:
-    bkr_db = BrokerDB(database=database)
+def rp_test() -> RepositoryHistoricalBarAlp:
+    bkr_db = BrokerDB(database=NAME_TEST_DB)
     return RepositoryHistoricalBarAlp(bkr_db=bkr_db)
 
 
@@ -25,13 +26,13 @@ def check_is_test_db(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
 
 def drop_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     check_is_test_db(rp_hist_bar)
-    query = f'drop table if exists {rp_hist_bar.tbl_name};'
+    query = f'drop table if exists {NAME_TBL};'
     rp_hist_bar.bkr_db.execute(query)
 
 
 def truncate_table_hist_bar(rp_hist_bar: RepositoryHistoricalBarAlp) -> None:
     check_is_test_db(rp_hist_bar)
-    query = f'truncate table {rp_hist_bar.tbl_name};'
+    query = f'truncate table {NAME_TBL};'
     rp_hist_bar.bkr_db.execute(query)
 
 

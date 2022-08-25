@@ -12,7 +12,6 @@ from repository.type import Timeframe
 
 @dataclass
 class RepositoryHistoricalBarAlp:
-    tbl_name: str = 'alpaca_historical_bar'
     bkr_db: BrokerDB = BrokerDB()
     bkr_query: BrokerQuery = BrokerQuery(QueryGroup.HISTORICAL_BAR_ALP)
 

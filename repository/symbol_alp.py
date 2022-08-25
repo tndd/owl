@@ -5,8 +5,6 @@ from pandas import DataFrame
 
 @dataclass
 class RepositorySymbolAlp:
-    tbl_name: str = 'alpaca_assets'
-
     def prepare(self) -> None:
         pass
 
